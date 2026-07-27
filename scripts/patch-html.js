@@ -6,8 +6,20 @@ const assetsDir = path.join(distClient, 'assets');
 
 if (fs.existsSync(assetsDir)) {
   const files = fs.readdirSync(assetsDir);
-  const mainJs = files.find(f => f.startsWith('index-') && f.endsWith('.js'));
-  const cssFile = files.find(f => f.startsWith('styles-') && f.endsWith('.css'));
+  
+  // Sort files by mtimeMs so the NEWEST generated bundle is always picked
+  const jsFiles = files
+    .filter(f => f.startsWith('index-') && f.endsWith('.js'))
+    .map(f => ({ name: f, time: fs.statSync(path.join(assetsDir, f)).mtimeMs }))
+    .sort((a, b) => b.time - a.time);
+
+  const cssFiles = files
+    .filter(f => f.startsWith('styles-') && f.endsWith('.css'))
+    .map(f => ({ name: f, time: fs.statSync(path.join(assetsDir, f)).mtimeMs }))
+    .sort((a, b) => b.time - a.time);
+
+  const mainJs = jsFiles.length > 0 ? jsFiles[0].name : null;
+  const cssFile = cssFiles.length > 0 ? cssFiles[0].name : null;
 
   const htmlContent = `<!DOCTYPE html>
 <html lang="en">

@@ -1,5 +1,4 @@
 {
-  "buildCommand": "vite build && node -e \"require('fs').copyFileSync('index.html', 'dist/client/index.html')\"",
   "outputDirectory": "dist/client",
   "rewrites": [
     {

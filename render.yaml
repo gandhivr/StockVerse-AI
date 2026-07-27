@@ -5,6 +5,7 @@ services:
     env: node
     region: singapore
     plan: free
+    rootDir: backend
     buildCommand: npm install
     startCommand: node src/app.js
     healthCheckPath: /health
@@ -14,15 +15,15 @@ services:
       - key: PORT
         value: 5000
       - key: MONGODB_URI
-        sync: false        # paste MongoDB Atlas URI in Render dashboard
+        sync: false
       - key: GEMINI_API_KEY
-        sync: false        # paste your Gemini API key
+        sync: false
       - key: JWT_SECRET
-        sync: false        # any 64-char random string
+        sync: false
       - key: ML_SERVICE_URL
         value: https://stockverse-ai-ml.onrender.com
       - key: FRONTEND_URL
-        value: https://stockverse-ai.vercel.app
+        value: https://stock-verse-ai-xxod.vercel.app
 
   # ── Python FastAPI ML Service ────────────────────────────────────────────────
   - type: web
@@ -30,10 +31,7 @@ services:
     env: python
     region: singapore
     plan: free
-    rootDir: python-ml-service
+    rootDir: backend/python-ml-service
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
-    envVars:
-      - key: PORT
-        value: 8000

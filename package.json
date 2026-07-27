@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite dev",
     "dev:all": "powershell -ExecutionPolicy Bypass -File scripts/start-all.ps1",
-    "build": "vite build && node -e \"require('fs').copyFileSync('index.html', 'dist/client/index.html')\"",
+    "build": "vite build && node scripts/patch-html.js",
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
